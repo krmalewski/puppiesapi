@@ -3,6 +3,7 @@ require('dotenv').config({ silent: true });
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
+const logger = require('morgan');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,6 +13,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // This will parse our payload from fetch which is sent as a JSON object
 app.use(bodyParser.json());
+
+app.use(logger('dev'));
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));

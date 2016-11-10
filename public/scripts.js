@@ -14,8 +14,13 @@ function adoptPuppy(payload) {
   });
 }
 
-function likePuppy() {
-  // Implement liking a puppy here.
+function likePuppy(id) {
+  console.log(id)
+  fetch(`/api/puppies/like/${id}`, {
+    method: 'PUT'
+  })
+  .then(getAllPuppies().then(renderPuppies))
+  .catch(error => console.log(error));
 }
 
 function abandonPuppy(id) {
@@ -48,10 +53,16 @@ function renderPuppies(puppies) {
       .find('.puppy-picture img')
       .attr('src', puppies[i].url);
 
-    // You should add a button for liking here
+    // You should add an abandon button here
     $newPuppy
     .find('.abandon').on('click', (event) => {
       abandonPuppy(puppies[i].id);
+    })
+
+    // You should add a button for liking here
+    $newPuppy
+    .find('.like').on('click', (event) => {
+      likePuppy(puppies[i].id);
     })
 
     $container.append($newPuppy);
@@ -59,11 +70,6 @@ function renderPuppies(puppies) {
     }
 
   }
-
-function registerLikeButtonHandler() {
-
-}
-
 
 
 function registerFormHandler() {
@@ -84,6 +90,5 @@ function registerFormHandler() {
 
 $(() => {
   registerFormHandler();
-  registerLikeButtonHandler();
   getAllPuppies().then(renderPuppies);
 });

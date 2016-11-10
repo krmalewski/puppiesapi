@@ -35,7 +35,14 @@ function abandonPuppy(req, res, next) {
 }
 
 function likePuppy(req, res, next) {
-  // Implement increasing the likes value of the puppy by one
+  console.log(req.params.id);
+  db.none(`
+    UPDATE puppies
+    SET likes = likes + 1
+    WHERE id = $1;
+    `, [req.params.id])
+  .then(next())
+  .catch(error => next(error));
 }
 
 module.exports = {
