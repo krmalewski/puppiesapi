@@ -1,3 +1,4 @@
+
 function getAllPuppies() {
   return fetch('/api/puppies')
     .then(r => r.json());
@@ -17,8 +18,13 @@ function likePuppy() {
   // Implement liking a puppy here.
 }
 
-function abandonPuppy() {
-  // Implement abandoning a puppy here :(
+function abandonPuppy(id) {
+  console.log(id);
+  fetch(`/api/puppies/${id}`, {
+    method: 'DELETE'
+  })
+  .then(getAllPuppies().then(renderPuppies))
+  .catch(error => console.log(error));
 }
 
 
@@ -43,20 +49,21 @@ function renderPuppies(puppies) {
       .attr('src', puppies[i].url);
 
     // You should add a button for liking here
-
-    // you should add a button for abandoning here
+    $newPuppy
+    .find('.abandon').on('click', (event) => {
+      abandonPuppy(puppies[i].id);
+    })
 
     $container.append($newPuppy);
+
+    }
+
   }
-}
 
 function registerLikeButtonHandler() {
-  // implement like button listener here.
+
 }
 
-function registerAbandonButtonHandler() {
-  // implement abandon button listener here. :(
-}
 
 
 function registerFormHandler() {
@@ -78,6 +85,5 @@ function registerFormHandler() {
 $(() => {
   registerFormHandler();
   registerLikeButtonHandler();
-  registerAbandonButtonHandler();
   getAllPuppies().then(renderPuppies);
 });
